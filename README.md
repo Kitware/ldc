@@ -22,13 +22,20 @@ ldc
 
 ldc generally wraps docker-compose, but it is aware of a particular directory structure and provides some nice shortcuts.
 
-ldc expects the following files to exist:
+To make a project compatible with LDC, you should set up your directories like this.  Note that `.ldc` will be created by this tool, and you can add it to your gitignore.
 
 ```txt
-.env
-docker/docker-compose.yml
-docker/docker-compose.dev.yml
+.
+├── .ldc
+│  ├── node_modules
+│  └── pyenv
+├── docker
+│  ├── docker-compose.dev.yml
+│  └── docker-compose.yml
+├── {...project files}
+└── README.md
 ```
+
 
 Then, to get up and running, you will typically do something like this:
 
