@@ -88,6 +88,10 @@ down () {
   evalf "${LDC_DOCKER_COMPOSE} ${LDC_COMPOSE_FILES_ARGS} down $@"
 }
 
+clean() {
+  down -v
+}
+
 build () {
   initdev
   evalf "${LDC_DOCKER_COMPOSE} ${LDC_COMPOSE_FILES_ARGS} build $@"
@@ -95,12 +99,12 @@ build () {
 
 KEY=$1
 case "$KEY" in
-  "start"|"up"|"dev"|"logs"|"ps"|"rm"|"down"|"pull"|"build")
+  "start"|"up"|"dev"|"logs"|"ps"|"rm"|"down"|"pull"|"build"|"clean")
     shift
     eval "${KEY} $@"
     ;;
   *)
     echo "ldc: Local Docker-Compose."
-    echo "Usage: ldc start|up|dev|logs|ps|rm|down|pull|build"
+    echo "Usage: ldc start|up|dev|logs|ps|rm|down|pull|build|clean"
     ;;
 esac
