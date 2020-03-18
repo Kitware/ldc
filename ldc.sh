@@ -20,32 +20,47 @@ init() {
 }
 
 initdev() {
+  init
   [ ! -f "${LDC_COMPOSE_DEV_FILE}" ] && echo "${LDC_COMPOSE_DEV_FILE} no such file" && exit 1
-  echo "DEV FILE LOADED"
+  echo "Loaded docker compose extension ${LDC_COMPOSE_DEV_FILE}"
   LDC_COMPOSE_FILES_ARGS="${LDC_COMPOSE_FILES_ARGS} -f ${LDC_COMPOSE_DEV_FILE}"
 }
 
 evalf() {
+  echo ""
   echo "~$ $1"
   echo ""
   eval $1
 }
 
+ps () {
+  initdev
+  evalf "${LDC_DOCKER_COMPOSE} ${LDC_COMPOSE_FILES_ARGS} ps $@"
+}
+
+check-service() {
+  lines=$(ps $@ | grep 'Up' | wc -l)
+  [ "$lines" == "0" ] && return 1
+  return 0
+}
+
 start() {
-  echo "LDC Start..."
+  initdev
+  evalf "${LDC_DOCKER_COMPOSE} ${LDC_COMPOSE_FILES_ARGS} start $@"
 }
 
 stop() {
+  initdev
   evalf "${LDC_DOCKER_COMPOSE} ${LDC_COMPOSE_FILES_ARGS} stop $@"
-  sleep 1
 }
 
 up() {
+  init
   evalf "${LDC_DOCKER_COMPOSE} ${LDC_COMPOSE_FILES_ARGS} up -d"
 }
 
 dev() {
-  stop $@
+  check-service $@ && stop $@
   initdev
   evalf "${LDC_DOCKER_COMPOSE} ${LDC_COMPOSE_FILES_ARGS} run --rm --service-ports $1"
 }
@@ -53,11 +68,6 @@ dev() {
 logs() {
   initdev
   evalf "${LDC_DOCKER_COMPOSE} ${LDC_COMPOSE_FILES_ARGS} logs -f $@"
-}
-
-ps () {
-  initdev
-  evalf "${LDC_DOCKER_COMPOSE} ${LDC_COMPOSE_FILES_ARGS} ps $@"
 }
 
 pull () {
@@ -86,13 +96,10 @@ build () {
 KEY=$1
 case "$KEY" in
   "start"|"up"|"dev"|"logs"|"ps"|"rm"|"down"|"pull"|"build")
-    init
     shift
-    echo ""
     eval "${KEY} $@"
     ;;
   *)
-    echo ""
     echo "ldc: Local Docker-Compose."
     echo "Usage: ldc start|up|dev|logs|ps|rm|down|pull|build"
     ;;
