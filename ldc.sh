@@ -1,20 +1,21 @@
 #!/bin/bash
 
-LDC_BASE_DIR="docker"
+LDC_ENV_FILE='.env'
+[ -f "${LDC_ENV_FILE}" ] && source "${LDC_ENV_FILE}"
+
+LDC_BASE_DIR="${LDC_BASE_DIR:docker}"
 LDC_COMPOSE_PROD_FILE="${LDC_BASE_DIR}/docker-compose.yml"
 LDC_COMPOSE_DEV_FILE="${LDC_BASE_DIR}/docker-compose.dev.yml"
 LDC_DOCKER_COMPOSE="docker-compose"
 LDC_COMPOSE_CMD="config"
-LDC_ENV_FILE='.env'
+
 
 init() {
-  source "${LDC_ENV_FILE}"
-  [ ! -f "${LDC_ENV_FILE}" ] && echo "${LDC_ENV_FILE} no such file" && exit 1
   [ ! -f "${LDC_COMPOSE_PROD_FILE}" ] && echo "${LDC_COMPOSE_PROD_FILE} no such file" && exit 1
   LDC_COMPOSE_FILES_ARGS="-f ${LDC_COMPOSE_PROD_FILE}"
   echo "Loaded docker compose file ${LDC_COMPOSE_PROD_FILE}"
   echo "Loaded environment file ${LDC_ENV_FILE}"
-  echo "-----------------"
+  echo "------env--------"
   cat "${LDC_ENV_FILE}"
   echo "-----------------"
 }
