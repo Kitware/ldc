@@ -8,9 +8,9 @@ LDC_COMPOSE_CMD="config"
 LDC_ENV_FILE='.env'
 
 init() {
+  source "${LDC_ENV_FILE}"
   [ ! -f "${LDC_ENV_FILE}" ] && echo "${LDC_ENV_FILE} no such file" && exit 1
   [ ! -f "${LDC_COMPOSE_PROD_FILE}" ] && echo "${LDC_COMPOSE_PROD_FILE} no such file" && exit 1
-  source "${LDC_ENV_FILE}"
   LDC_COMPOSE_FILES_ARGS="-f ${LDC_COMPOSE_PROD_FILE}"
   echo "Loaded docker compose file ${LDC_COMPOSE_PROD_FILE}"
   echo "Loaded environment file ${LDC_ENV_FILE}"
