@@ -3,7 +3,7 @@
 LDC_ENV_FILE='.env'
 [ -f "${LDC_ENV_FILE}" ] && source "${LDC_ENV_FILE}"
 
-LDC_BASE_DIR="${LDC_BASE_DIR:docker}"
+LDC_BASE_DIR="${LDC_BASE_DIR:-docker}"
 LDC_COMPOSE_PROD_FILE="${LDC_BASE_DIR}/docker-compose.yml"
 LDC_COMPOSE_DEV_FILE="${LDC_BASE_DIR}/docker-compose.dev.yml"
 LDC_DOCKER_COMPOSE="docker-compose"
