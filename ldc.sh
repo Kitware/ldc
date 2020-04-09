@@ -63,7 +63,7 @@ up() {
 dev() {
   check-service $@ && stop $@
   initdev
-  evalf "${LDC_DOCKER_COMPOSE} ${LDC_COMPOSE_FILES_ARGS} run --rm --service-ports $1"
+  evalf "${LDC_DOCKER_COMPOSE} ${LDC_COMPOSE_FILES_ARGS} up $1"
 }
 
 logs() {
