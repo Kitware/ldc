@@ -5,7 +5,7 @@ ldc is a development tool for running development environments inside docker.
 ## Installation
 
 ```bash
-git clone git@github.com:subdavis/ldc.git
+git clone git@github.com:kitware/ldc.git
 cd ldc
 
 # Have a look at your path to pick somewhere you can install ldc
