@@ -1,22 +1,33 @@
 #!/bin/bash
 
-LDC_ENV_FILE='.env'
-[ -f "${LDC_ENV_FILE}" ] && source "${LDC_ENV_FILE}"
+if [ -f '.env' ]; then
+  source '.env'
+  LDC_ENV_FILE='.env'
+fi
 
 LDC_BASE_DIR="${LDC_BASE_DIR:-docker}"
-LDC_COMPOSE_PROD_FILE="${LDC_BASE_DIR}/docker-compose.yml"
-LDC_COMPOSE_DEV_FILE="${LDC_BASE_DIR}/docker-compose.dev.yml"
-LDC_DOCKER_COMPOSE="docker-compose"
-LDC_COMPOSE_CMD="config"
+LDC_COMPOSE_PROD_FILE=${LDC_COMPOSE_PROD_FILE:-"${LDC_BASE_DIR}/docker-compose.yml"}
+LDC_COMPOSE_DEV_FILE=${LDC_COMPOSE_DEV_FILE:-"${LDC_BASE_DIR}/docker-compose.dev.yml"}
+LDC_DOCKER_COMPOSE=${LDC_DOCKER_COMPOSE:-"docker-compose"}
 
+if [ -f "${LDC_BASE_DIR}/.env" ]; then
+  LDC_DOCKER_COMPOSE="${LDC_DOCKER_COMPOSE} --env-file ${LDC_BASE_DIR}/.env"
+fi
 
 init() {
   [ ! -f "${LDC_COMPOSE_PROD_FILE}" ] && echo "${LDC_COMPOSE_PROD_FILE} no such file" && exit 1
   LDC_COMPOSE_FILES_ARGS="-f ${LDC_COMPOSE_PROD_FILE}"
   echo "Loaded docker compose file ${LDC_COMPOSE_PROD_FILE}"
-  echo "Loaded environment file ${LDC_ENV_FILE}"
-  echo "------env--------"
-  cat "${LDC_ENV_FILE}"
+  if [ ! -z ${LDC_ENV_FILE} ]; then
+    echo "Loaded environment file ${LDC_ENV_FILE}"
+    echo "------env--------"
+    cat "${LDC_ENV_FILE}"
+  fi
+  if [ -f "${LDC_BASE_DIR}/.env" ]; then
+    echo "Loaded docker-compose variable file ${LDC_BASE_DIR}/.env"
+    echo "------compose-vars--------"
+    cat "${LDC_BASE_DIR}/.env"
+  fi
   echo "-----------------"
 }
 

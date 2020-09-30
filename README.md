@@ -34,7 +34,6 @@ To make a project compatible with LDC, you should set up your directories like t
 └── README.md
 ```
 
-
 Then, to get up and running, you will typically do something like this:
 
 ```bash
