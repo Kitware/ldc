@@ -22,11 +22,13 @@ ldc
 
 ldc generally wraps docker-compose, but it is aware of a particular directory structure and provides some nice shortcuts.
 
-To make a project compatible with LDC, you should set up your directories like this, or override `LDC_BASE_DIR` in `.env`.
+* `ldc` looks in `./docker` and `./devops` by defailt
+* override `LDC_BASE_DIR` in `.env` if your docker-compose directory is different.
 
 ```txt
 .
 ├── docker
+│  ├── .env
 │  ├── docker-compose.dev.yml
 │  └── docker-compose.yml
 ├── {...project files}
@@ -41,11 +43,29 @@ Then, to get up and running, you will typically do something like this:
 cd project_directory
 
 # start docker-compose in detached mode
-ldc up
+ldc up -d
 
 # swap out whatever you're ready to work on with a development container
-ldc dev $service_name
+ldc dev up $service_name
 ```
+
+## Advanced usage
+
+LDC just forwards commands to `docker-compose` and cleverly includes/excludes `docker-compose.yml` files.
+
+```bash
+ldc [extensions...] args
+```
+
+where `extensions` is 0 or more `docker-compose.{name}.yml` names to include.
+
+```bash
+ldc dev local up -d
+# ... would be the same as ...
+docker-compose -f docker-compose.dev.yml -f docker-compose.local.yml up -d
+```
+
+If `docker-compose.local.yml` doesn't exist (for example), ldc would understand that argument to be intended as passing to `docker-compose`, and docker-compose would throw an error.
 
 ## Non-standard commands
 
