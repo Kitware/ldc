@@ -62,7 +62,11 @@ where `extensions` is 0 or more `docker-compose.{name}.yml` names to include.
 ```bash
 ldc dev local up -d
 # ... would be the same as ...
-docker-compose -f docker-compose.dev.yml -f docker-compose.local.yml up -d
+pushd ${LDC_BASE_DIR} && docker-compose \
+  -f docker-compose.yml \
+  -f docker-compose.dev.yml \
+  -f docker-compose.local.yml \
+  up -d && popd
 ```
 
 If `docker-compose.local.yml` doesn't exist (for example), ldc would understand that argument to be intended as passing to `docker-compose`, and docker-compose would throw an error.
