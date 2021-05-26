@@ -10,7 +10,7 @@ POSSIBLE_BASE_DIRS=(docker devops .)
 # Figure out where the docker-compose files are
 if [ -z ${LDC_BASE_DIR} ]; then
   cwd=$(pwd)
-  while [ -n "$(dirname $cwd)" ]; do
+  while [ "$(dirname $cwd)" != "/" ]; do
     for candidate in ${POSSIBLE_BASE_DIRS[@]}; do
       if [ -f "${cwd}/${candidate}/docker-compose.yml" ]; then
         LDC_BASE_DIR="${cwd}/${candidate}"
