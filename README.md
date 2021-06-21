@@ -11,12 +11,14 @@ cd ldc
 # Have a look at your path to pick somewhere you can install ldc
 echo $PATH
 
-# Symlink this script into place, choosing a parent directory
-make install parent=~/.local/bin
+# Symlink this script into place, choosing a parent directory from PATH
+ln -s $(pwd)/ldc.sh /usr/local/bin/ldc
 
 # test installation
 ldc
 ```
+
+Now, you can `git pull` to update.
 
 ## Usage
 
@@ -71,16 +73,12 @@ pushd ${LDC_BASE_DIR} && docker-compose \
 
 If `docker-compose.local.yml` doesn't exist (for example), ldc would understand that argument to be intended as passing to `docker-compose`, and docker-compose would throw an error.
 
-## Non-standard commands
-
-Most ldc commands are just `docker-compose` aliases.  These are not:
-
-* pull - pulls all images from compose, but will also pull base images from all dockerfiles in `LDC_BASE_DIR`.
-* clean - same as `down -f`.  Removes compose named volumes.
-* dev - stop running service, replace it with a version with overrides from docker-compose.dev.yml
-
 ## Use case
 
 I created this tool primarily as a front-end developer who sometimes needs to modify backend code.  For me, the cost of learning to set up someone else's development environment is significantly greater than the cost of dealing with the rigidity of this style of dev environment.
 
 It's often much easier to document a dev setup with this tool than to write detailed docs for containerless setups, such as python virtual environments, where env variables, provision scripts, and dependency concerns are involved.
+
+## Usage with Girder 4
+
+ldc generally works well with Girder 4 projects.
