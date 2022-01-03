@@ -1,3 +1,9 @@
+# LDC is deprecated
+
+Rather than configure a project to support LDC, consider following the template set by [Girder 4 cookiecutter](https://github.com/girder/cookiecutter-girder-4) using `docker-compose.override.yml`.
+
+-------------------------------
+
 # LDC; Local Docker Compose
 
 ldc is a development tool for running development environments inside docker.
